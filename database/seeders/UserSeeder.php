@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         \App\Models\User::create([
-            'id' => 1,
+            'id' => config('app.guest_id'),
             'name' => 'Guest',
         ]);
     }

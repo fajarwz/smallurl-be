@@ -33,7 +33,7 @@ class ShortUrlController extends Controller
 
         $createShortUrl = $this->shortUrl::create(array_merge(
             $validated,
-            ['user_id' => Auth::id()]
+            ['user_id' => config('app.guest_id')]
         ));
 
         if ($createShortUrl) {
