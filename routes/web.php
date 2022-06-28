@@ -15,3 +15,6 @@ use App\Http\Controllers\RedirectUrlController;
 */
 
 Route::get('/{shortUrl}', RedirectUrlController::class);
+Route::get('/', function() {
+    phpinfo();
+});

@@ -19,6 +19,11 @@ class UserUrlController extends Controller
     }
 
     public function visit($shortUrlId) {
-        return ResponseFormatter::success($this->visit::whereShortUrlId($shortUrlId)->get());
+        $url = $this->shortUrl::with('visits')->find($shortUrlId);
+
+        if($url->user_id === auth()->id()) 
+            return ResponseFormatter::success($url);
+
+        return ResponseFormatter::error([], 'Not found', 404);
     }
 }

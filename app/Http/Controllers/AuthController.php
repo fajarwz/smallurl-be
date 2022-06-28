@@ -29,7 +29,7 @@ class AuthController extends Controller
             'user' => $user,
             'access_token' => [
                 'token' => $token,
-                'type' => 'bearer',
+                'type' => 'Bearer',
                 'expires_in' => Auth::factory()->getTTL() * 60,
             ],
         ]);
@@ -53,8 +53,11 @@ class AuthController extends Controller
         $token = Auth::login($user);
         return ResponseFormatter::success([
             'user' => $user,
-            'token' => $token,
-            'type' => 'bearer',
+            'access_token' => [
+                'token' => $token,
+                'type' => 'Bearer',
+                'expires_in' => Auth::factory()->getTTL() * 60,
+            ],
         ], 'User created successfully');
     }
 
@@ -70,7 +73,7 @@ class AuthController extends Controller
             'user' => Auth::user(),
             'access_token' => [
                 'token' => Auth::refresh(),
-                'type' => 'bearer',
+                'type' => 'Bearer',
                 'expires_in' => Auth::factory()->getTTL() * 60,
             ],
         ]);
