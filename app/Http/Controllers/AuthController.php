@@ -10,6 +10,69 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    /**
+     * Login
+     * @OA\Post (
+     *     path="/api/login",
+     *     tags={"Auth"},
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                      type="object",
+     *                      @OA\Property(
+     *                          property="email",
+     *                          type="string"
+     *                      ),
+     *                      @OA\Property(
+     *                          property="password",
+     *                          type="string"
+     *                      )
+     *                 ),
+     *                 example={
+     *                     "email":"user@example.com",
+     *                     "password":"user1"
+     *                }
+     *             )
+     *         )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="success",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="meta", type="object", 
+     *                  @OA\Property(property="code", type="number", example=200),
+     *                  @OA\Property(property="status", type="string", example="success"),
+     *                  @OA\Property(property="message", type="string", example=null),
+     *              ),
+     *              @OA\Property(property="data", type="object", 
+     *                  @OA\Property(property="user", type="object", 
+     *                      @OA\Property(property="id", type="number", example=1),
+     *                      @OA\Property(property="name", type="string", example="User"),
+     *                      @OA\Property(property="email", type="string", example="user@example.com"),
+     *                      @OA\Property(property="email_verified_at", type="string", example=null),
+     *                      @OA\Property(property="updated_at", type="string", example="2022-06-28 06:06:17"),
+     *                      @OA\Property(property="created_at", type="string", example="2022-06-28 06:06:17"),
+     *                  ),
+     *                  @OA\Property(property="access_token", type="object", 
+     *                      @OA\Property(property="token", type="string", example="randomtokenasfhajskfhajf398rureuuhfdshk"),
+     *                      @OA\Property(property="type", type="string", example="Bearer"),
+     *                      @OA\Property(property="expires_in", type="number", example=3600),
+     *                  ),
+     *              ),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="invalid",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="msg", type="string", example="fail"),
+     *          )
+     *      )
+     * )
+     */
+
     public function login(Request $request)
     {
         $request->validate([
