@@ -1,6 +1,6 @@
 <?php
 
-function apiResponse($data = null, $message = null, $code = 404, $status = 'error') {
+function apiResponse($data = null, $message = null, $code = null, $status = null) {
     return [
         'meta' => [
             'code' => $code,
@@ -21,6 +21,6 @@ function successResponse($data = null, $message = null)
 function errorResponse($data = null, $message = null, $code = 400)
 {
     return response()->json(
-        apiResponse($data, $message, $code), $code
+        apiResponse($data, $message, $code, 'error'), $code
     );
 }
