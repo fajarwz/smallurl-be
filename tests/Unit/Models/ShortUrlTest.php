@@ -6,8 +6,8 @@ use App\Models\ShortUrl;
 use App\Models\User;
 use App\Models\Visit;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use Illuminate\Support\Collection;
+use Tests\TestCase;
 
 class ShortUrlTest extends TestCase
 {

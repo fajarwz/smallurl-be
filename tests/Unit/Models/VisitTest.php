@@ -6,7 +6,6 @@ use App\Models\ShortUrl;
 use App\Models\Visit;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Illuminate\Support\Collection;
 
 class VisitTest extends TestCase
 {
