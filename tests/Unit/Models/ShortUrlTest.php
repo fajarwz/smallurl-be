@@ -13,7 +13,8 @@ class ShortUrlTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_a_short_url_has_belongs_to_user_relation()
+    /** @test */
+    public function a_short_url_has_belongs_to_user_relation()
     {
         $createShortUrl = ShortUrl::factory()->create();
 
@@ -21,7 +22,8 @@ class ShortUrlTest extends TestCase
         $this->assertEquals($createShortUrl->user_id, $createShortUrl->user->id);
     }
 
-    public function test_a_short_url_has_has_many_visit_relation()
+    /** @test */
+    public function a_short_url_has_has_many_visit_relation()
     {
         $createShortUrl = ShortUrl::factory()->create();
 
@@ -35,7 +37,8 @@ class ShortUrlTest extends TestCase
         $this->assertEquals($shortUrl->id, $shortUrl->visits->first()->short_url_id);
     }
 
-    public function test_a_short_url_model_output_date_has_correct_format()
+    /** @test */
+    public function a_short_url_model_output_date_has_correct_format()
     {
         $now = date('Y-m-d H:i:s');
         $createShortUrl = ShortUrl::factory()->create();

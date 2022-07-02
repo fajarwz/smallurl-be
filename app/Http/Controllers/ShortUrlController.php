@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ShortUrl;
-use App\Helpers\ResponseFormatter;
+// use App\Helpers\ResponseFormatter;
 use Auth;
 
 class ShortUrlController extends Controller
@@ -37,14 +37,14 @@ class ShortUrlController extends Controller
         ));
 
         if ($createShortUrl) {
-            return ResponseFormatter::success([
+            return successResponse([
                 'name' => $createShortUrl['name'],
                 'original_url' => $createShortUrl['original_url'],
                 'short_url' => $createShortUrl['short_url'],
             ]);
         }
 
-        return ResponseFormatter::error([], 'Error! Please try again later', 500);
+        return errorResponse([], 'Error! Please try again later', 500);
 
     }
 
@@ -75,14 +75,14 @@ class ShortUrlController extends Controller
         ));
 
         if ($createShortUrl) {
-            return ResponseFormatter::success([
+            return successResponse([
                 'name' => $createShortUrl['name'],
                 'original_url' => $createShortUrl['original_url'],
                 'short_url' => $createShortUrl['short_url'],
             ]);
         }
 
-        return ResponseFormatter::error([], 'Error! Please try again later', 500);
+        return errorResponse([], 'Error! Please try again later', 500);
 
     }
 

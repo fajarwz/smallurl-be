@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ShortUrl;
 use App\Models\Visit;
-use App\Helpers\ResponseFormatter;
 
 class UserUrlController extends Controller
 {
@@ -15,7 +14,7 @@ class UserUrlController extends Controller
     }
 
     public function index() {
-        return ResponseFormatter::success($this->shortUrl::whereUserId(auth()->id())->get());
+        return successResponse($this->shortUrl::whereUserId(auth()->id())->get());
     }
 
     public function visit($shortUrlId) {
@@ -24,6 +23,6 @@ class UserUrlController extends Controller
         if($url->user_id === auth()->id()) 
             return ResponseFormatter::success($url);
 
-        return ResponseFormatter::error([], 'Not found', 404);
+        return errorResponse([], 'Not found', 404);
     }
 }

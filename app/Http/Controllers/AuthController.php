@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\ResponseFormatter;
 use App\Models\User;
 use Auth;
 use Illuminate\Http\Request;
@@ -84,11 +83,11 @@ class AuthController extends Controller
         $token = Auth::attempt($credentials);
         if (!$token)
         {
-            return ResponseFormatter::error([], 'Incorrect username or password!', 401);
+            return errorResponse([], 'Incorrect username or password!', 401);
         }
 
         $user = Auth::user();
-        return ResponseFormatter::success([
+        return successResponse([
             'user' => $user,
             'access_token' => [
                 'token' => $token,
@@ -114,7 +113,7 @@ class AuthController extends Controller
         ]);
 
         $token = Auth::login($user);
-        return ResponseFormatter::success([
+        return successResponse([
             'user' => $user,
             'access_token' => [
                 'token' => $token,
@@ -127,12 +126,12 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout();
-        return ResponseFormatter::success([], 'Successfully logged out');
+        return successResponse([], 'Successfully logged out');
     }
 
     public function refresh()
     {
-        return ResponseFormatter::success([
+        return successResponse([
             'user' => Auth::user(),
             'access_token' => [
                 'token' => Auth::refresh(),
