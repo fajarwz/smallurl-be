@@ -13,7 +13,7 @@ class UserTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_user_model_output_date_has_correct_format()
+    public function it_display_date_with_correct_format()
     {
         $now = date('Y-m-d H:i:s');
         $createUser = User::factory()->create();
@@ -38,7 +38,7 @@ class UserTest extends TestCase
     }
 
     /** @test */
-    public function user_model_can_generate_token()
+    public function it_can_generate_token()
     {
         $user = User::factory()->create();
         $token = auth()->login($user);

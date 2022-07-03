@@ -30,7 +30,7 @@ Route::prefix('/v1')->group(function() {
         Route::get('/visit/{shortUrlId}', [UserUrlController::class, 'visit']);
     });
     
-    Route::post('/short-url', [ShortUrlController::class, 'shortUrl']);
+    Route::post('/short-url', [ShortUrlController::class, 'store']);
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
 });

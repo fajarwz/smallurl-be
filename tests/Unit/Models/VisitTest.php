@@ -12,7 +12,7 @@ class VisitTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_visit_model_output_date_has_correct_format()
+    public function it_display_date_with_correct_format()
     {
         $now = date('Y-m-d H:i:s');
         $createVisit = Visit::factory()->create();

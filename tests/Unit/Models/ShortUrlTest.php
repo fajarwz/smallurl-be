@@ -38,7 +38,7 @@ class ShortUrlTest extends TestCase
     }
 
     /** @test */
-    public function a_short_url_model_output_date_has_correct_format()
+    public function it_display_date_with_correct_format()
     {
         $now = date('Y-m-d H:i:s');
         $createShortUrl = ShortUrl::factory()->create();

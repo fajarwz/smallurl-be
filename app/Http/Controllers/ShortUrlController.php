@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ShortUrl;
-// use App\Helpers\ResponseFormatter;
+use App\Http\Requests\ShortUrl\StoreRequest;
 use Auth;
 
 class ShortUrlController extends Controller
@@ -13,15 +13,8 @@ class ShortUrlController extends Controller
         $this->shortUrl = $shortUrl;
     }
 
-    public function shortUrl(Request $request) {
-        $validated = $request->validate([
-            'name' => 'nullable|string',
-            'original_url' => 'required|URL',
-        ]);
-
-        if(empty($validated['name'])) {
-            $validated['name'] = $validated['original_url'];
-        }
+    public function store(StoreRequest $request) {
+        $validated = $request->validated();
 
         $duplicatedRandomString = 0;
         
