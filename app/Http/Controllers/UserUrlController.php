@@ -21,7 +21,7 @@ class UserUrlController extends Controller
         $url = $this->shortUrl::with('visits')->find($shortUrlId);
 
         if($url->user_id === auth()->id()) 
-            return ResponseFormatter::success($url);
+            return successResponse($url);
 
         return errorResponse([], 'Not found', 404);
     }

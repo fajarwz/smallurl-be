@@ -2,9 +2,8 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Helpers\ResponseFormatter;
+use Tests\TestCase;
 
 class HelpersTest extends TestCase
 {
@@ -38,7 +37,7 @@ class HelpersTest extends TestCase
         $this->assertArrayHasKey('code', $response['meta']);
         $this->assertArrayHasKey('status', $response['meta']);
         $this->assertArrayHasKey('message', $response['meta']);
-        
+
         $this->assertArrayHasKey('data', $response);
     }
 
