@@ -33,12 +33,25 @@ class ShortUrl extends Model
         return $this->hasMany(Visit::class);
     }
 
+    private static function randomString() {
+        return substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 5);
+    }
+
     protected static function boot()
     {
         parent::boot();
 
         static::creating(function ($model) {
             $model->name = $model->name ?? $model->original_url;
+
+            $duplicatedRandomString = 0;
+            if (empty($model->short_url)) {
+                do {
+                    $model->short_url = self::randomString();
+                    
+                    $duplicatedRandomString = ShortUrl::whereShortUrl($model->short_url)->count();
+                } while ($duplicatedRandomString > 0);
+            }
         });
     }
 }

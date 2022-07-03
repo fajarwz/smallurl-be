@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ShortUrl;
 use App\Http\Requests\ShortUrl\StoreRequest;
+use App\Http\Requests\ShortUrl\CustomUrlRequest;
 use Auth;
 
 class ShortUrlController extends Controller
@@ -15,14 +16,6 @@ class ShortUrlController extends Controller
 
     public function store(StoreRequest $request) {
         $validated = $request->validated();
-
-        $duplicatedRandomString = 0;
-        
-        do {
-            $validated['short_url'] = $this->randomString();
-            
-            $duplicatedRandomString = $this->shortUrl::whereShortUrl($validated['short_url'])->count();
-        } while ($duplicatedRandomString > 0);
 
         $createShortUrl = $this->shortUrl::create(array_merge(
             $validated,
@@ -41,26 +34,8 @@ class ShortUrlController extends Controller
 
     }
 
-    public function customUrl(Request $request) {
-        $validated = $request->validate([
-            'name' => 'nullable|string',
-            'original_url' => 'required|URL',
-            'short_url' => 'nullable|string',
-        ]);
-
-        if(empty($validated['name'])) {
-            $validated['name'] = $validated['original_url'];
-        }
-
-        $duplicatedRandomString = 0;
-        
-        if (empty($validated['short_url'])) {
-            do {
-                $validated['short_url'] = $this->randomString();
-                
-                $duplicatedRandomString = $this->shortUrl::whereShortUrl($validated['short_url'])->count();
-            } while ($duplicatedRandomString > 0);
-        }
+    public function customUrl(CustomUrlRequest $request) {
+        $validated = $request->validated();
 
         $createShortUrl = $this->shortUrl::create(array_merge(
             $validated,
@@ -79,7 +54,4 @@ class ShortUrlController extends Controller
 
     }
 
-    private function randomString() {
-        return substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 5);
-    }
 }
