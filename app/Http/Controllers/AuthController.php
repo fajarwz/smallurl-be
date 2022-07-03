@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Http\Requests\Auth\LoginRequest;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -72,27 +73,20 @@ class AuthController extends Controller
      * )
      */
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-        ]);
-        $credentials = $request->only('email', 'password');
-
-        $token = Auth::attempt($credentials);
+        $token = auth()->attempt($request->validated());
         if (!$token)
         {
             return errorResponse([], 'Incorrect username or password!', 401);
         }
 
-        $user = Auth::user();
         return successResponse([
-            'user' => $user,
+            'user' => auth()->user(),
             'access_token' => [
                 'token' => $token,
                 'type' => 'Bearer',
-                'expires_in' => Auth::factory()->getTTL() * 60,
+                'expires_in' => auth()->factory()->getTTL() * 60,
             ],
         ]);
 
