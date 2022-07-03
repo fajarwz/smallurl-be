@@ -15,10 +15,8 @@ class ShortUrlController extends Controller
     }
 
     public function store(StoreRequest $request) {
-        $validated = $request->validated();
-
         $createShortUrl = $this->shortUrl::create(array_merge(
-            $validated,
+            $request->validated(),
             ['user_id' => config('app.guest_id')]
         ));
 
@@ -35,10 +33,8 @@ class ShortUrlController extends Controller
     }
 
     public function customUrl(CustomUrlRequest $request) {
-        $validated = $request->validated();
-
         $createShortUrl = $this->shortUrl::create(array_merge(
-            $validated,
+            $request->validated(),
             ['user_id' => Auth::id()]
         ));
 
