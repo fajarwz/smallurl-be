@@ -2,25 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\ShortUrl;
-use App\Http\Requests\ShortUrl\StoreRequest;
 use App\Http\Requests\ShortUrl\CustomUrlRequest;
-use Auth;
+use App\Http\Requests\ShortUrl\StoreRequest;
+use App\Models\ShortUrl;
 
 class ShortUrlController extends Controller
 {
-    public function __construct(ShortUrl $shortUrl) {
+    public function __construct(ShortUrl $shortUrl)
+    {
         $this->shortUrl = $shortUrl;
     }
 
-    public function store(StoreRequest $request) {
+    public function store(StoreRequest $request)
+    {
         $createShortUrl = $this->shortUrl::create(array_merge(
             $request->validated(),
             ['user_id' => config('app.guest_id')]
         ));
 
-        if ($createShortUrl) {
+        if ($createShortUrl)
+        {
             return successResponse([
                 'name' => $createShortUrl['name'],
                 'original_url' => $createShortUrl['original_url'],
@@ -32,13 +33,15 @@ class ShortUrlController extends Controller
 
     }
 
-    public function customUrl(CustomUrlRequest $request) {
+    public function customUrl(CustomUrlRequest $request)
+    {
         $createShortUrl = $this->shortUrl::create(array_merge(
             $request->validated(),
-            ['user_id' => Auth::id()]
+            ['user_id' => auth()->id()]
         ));
 
-        if ($createShortUrl) {
+        if ($createShortUrl)
+        {
             return successResponse([
                 'name' => $createShortUrl['name'],
                 'original_url' => $createShortUrl['original_url'],
