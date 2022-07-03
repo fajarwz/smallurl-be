@@ -49,7 +49,7 @@ class ShortUrl extends Model
                 do {
                     $model->short_url = self::randomString();
                     
-                    $duplicatedRandomString = ShortUrl::whereShortUrl($model->short_url)->count();
+                    $duplicatedRandomString = $model::whereShortUrl($model->short_url)->count();
                 } while ($duplicatedRandomString > 0);
             }
         });
