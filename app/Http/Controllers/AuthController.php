@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
-use Auth;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    public function __construct(User $user) {
+    public function __construct(User $user)
+    {
         $this->user = $user;
     }
 
@@ -45,13 +45,13 @@ class AuthController extends Controller
      *          response=200,
      *          description="success",
      *          @OA\JsonContent(
-     *              @OA\Property(property="meta", type="object", 
+     *              @OA\Property(property="meta", type="object",
      *                  @OA\Property(property="code", type="number", example=200),
      *                  @OA\Property(property="status", type="string", example="success"),
      *                  @OA\Property(property="message", type="string", example=null),
      *              ),
-     *              @OA\Property(property="data", type="object", 
-     *                  @OA\Property(property="user", type="object", 
+     *              @OA\Property(property="data", type="object",
+     *                  @OA\Property(property="user", type="object",
      *                      @OA\Property(property="id", type="number", example=1),
      *                      @OA\Property(property="name", type="string", example="User"),
      *                      @OA\Property(property="email", type="string", example="user@example.com"),
@@ -59,7 +59,7 @@ class AuthController extends Controller
      *                      @OA\Property(property="updated_at", type="string", example="2022-06-28 06:06:17"),
      *                      @OA\Property(property="created_at", type="string", example="2022-06-28 06:06:17"),
      *                  ),
-     *                  @OA\Property(property="access_token", type="object", 
+     *                  @OA\Property(property="access_token", type="object",
      *                      @OA\Property(property="token", type="string", example="randomtokenasfhajskfhajf398rureuuhfdshk"),
      *                      @OA\Property(property="type", type="string", example="Bearer"),
      *                      @OA\Property(property="expires_in", type="number", example=3600),
@@ -126,11 +126,11 @@ class AuthController extends Controller
     public function refresh()
     {
         return successResponse([
-            'user' => Auth::user(),
+            'user' => auth()->user(),
             'access_token' => [
-                'token' => Auth::refresh(),
+                'token' => auth()->refresh(),
                 'type' => 'Bearer',
-                'expires_in' => Auth::factory()->getTTL() * 60,
+                'expires_in' => auth()->factory()->getTTL() * 60,
             ],
         ]);
     }
