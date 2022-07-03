@@ -2,21 +2,41 @@
 
 namespace Tests\Unit\Requests\Auth;
 
+use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Tests\Unit\Traits\ValidateField;
 
 class LoginRequestTest extends TestCase
 {
+    use RefreshDatabase, ValidateField;
+
+    /** @test */
+    public function email_field_is_valid()
+    {
+        $this->assertTrue($this->validateField('email', 'jon@gmail.com'));
+        $this->assertTrue($this->validateField('email', 'j@gmail.com'));
+        $this->assertFalse($this->validateField('email', 'jon'));
+        $this->assertFalse($this->validateField('email', 'jon@gmail'));
+    }
+
+    /** @test */
+    public function password_field_is_valid()
+    {
+        $this->assertTrue($this->validateField('password', 'jonijoni'));
+        $this->assertFalse($this->validateField('password', ''));
+    }
+
     /**
-     * A basic feature test example.
+     * Set up operations
      *
      * @return void
      */
-    public function test_example()
+    public function setUp(): void
     {
-        // $response = $this->get('/');
+        parent::setUp();
 
-        $this->assertTrue(true);
+        $this->rules = (new LoginRequest())->rules();
+        $this->validator = $this->app['validator'];
     }
 }
