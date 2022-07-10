@@ -17,7 +17,10 @@ class ShortUrlController extends Controller
     {
         $createShortUrl = $this->shortUrl::create(array_merge(
             $request->validated(),
-            ['user_id' => config('app.guest_id')]
+            [
+                'user_id' => config('app.guest_id'),
+                'original_url' => strpos($request->original_url, 'http') !== 0 ? "http://$request->original_url" : $request->original_url,
+            ]
         ));
 
         if ($createShortUrl)
