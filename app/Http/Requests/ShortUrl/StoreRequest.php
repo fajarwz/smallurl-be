@@ -3,9 +3,12 @@
 namespace App\Http\Requests\ShortUrl;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Traits\ErrorResponseJson;
 
 class StoreRequest extends FormRequest
 {
+    use ErrorResponseJson;
+
     /**
      * Determine if the user is authorized to make this request.
      *

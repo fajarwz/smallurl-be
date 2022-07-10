@@ -83,4 +83,15 @@ class AuthTest extends TestCase
 
         $this->assertEquals($responseJson['meta']['message'], 'Incorrect username or password!');
     }
+
+    /** @test */
+    public function unauthenticated_users_receive_unauthenticated_response_while_accessing_protected_route()
+    {
+        $response = $this->get(route('user-url.index'));
+        $response->assertStatus(401);
+
+        $responseJson = $response->json();
+
+        $this->assertEquals($responseJson['meta']['message'], 'Unauthenticated.');
+    }
 }
