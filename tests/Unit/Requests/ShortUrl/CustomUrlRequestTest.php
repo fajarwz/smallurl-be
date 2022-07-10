@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Requests\ShortUrl;
+namespace Tests\Unit\Requests\ShortUrl;
 
 use Tests\Unit\Traits\ValidateField;
 use App\Http\Requests\ShortUrl\CustomUrlRequest;

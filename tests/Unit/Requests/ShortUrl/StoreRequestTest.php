@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Requests\ShortUrl;
+namespace Tests\Unit\Requests\ShortUrl;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

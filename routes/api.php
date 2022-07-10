@@ -23,14 +23,14 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('/v1')->group(function() {
     Route::middleware('auth:api')->group(function ()
     {
-        Route::post('/logout', [AuthController::class, 'logout']);
-        Route::post('/refresh', [AuthController::class, 'refresh']);
-        Route::post('/custom-url', [ShortUrlController::class, 'customUrl']);
-        Route::get('/my-url', [UserUrlController::class, 'index']);
-        Route::get('/visit/{shortUrlId}', [UserUrlController::class, 'visit']);
+        Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+        Route::post('/refresh', [AuthController::class, 'refresh'])->name('auth.refresh');
+        Route::post('/custom-url', [ShortUrlController::class, 'customUrl'])->name('short-url.custom');
+        Route::get('/my-url', [UserUrlController::class, 'index'])->name('user-url.index');
+        Route::get('/visit/{shortUrlId}', [UserUrlController::class, 'visit'])->name('user-url.visit');
     });
     
-    Route::post('/short-url', [ShortUrlController::class, 'store']);
-    Route::post('/register', [AuthController::class, 'register']);
-    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/short-url', [ShortUrlController::class, 'store'])->name('short-url.short');
+    Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
+    Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 });
