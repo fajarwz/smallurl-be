@@ -12,6 +12,12 @@ use Illuminate\Routing\Controller as BaseController;
  *    title="SmallUrl API",
  *    description="A url shortener API by fajarwz.com",
  *    version="1.0.0",
+ * ),
+ * @OA\SecurityScheme(
+ *     type="apiKey",
+ *     in="header",
+ *     securityScheme="Authorization",
+ *     name="Authorization"
  * )
  */
 
