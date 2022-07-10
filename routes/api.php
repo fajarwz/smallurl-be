@@ -27,7 +27,7 @@ Route::prefix('/v1')->group(function() {
         Route::post('/refresh', [AuthController::class, 'refresh'])->name('auth.refresh');
         Route::post('/custom-url', [ShortUrlController::class, 'customUrl'])->name('short-url.custom');
         Route::get('/my-url', [UserUrlController::class, 'index'])->name('user-url.index');
-        Route::get('/visit/{shortUrlId}', [UserUrlController::class, 'visit'])->name('user-url.visit');
+        Route::get('/visit/{shortUrlId}', [UserUrlController::class, 'urlVisits'])->name('user-url.visit');
     });
     
     Route::post('/short-url', [ShortUrlController::class, 'store'])->name('short-url.short');

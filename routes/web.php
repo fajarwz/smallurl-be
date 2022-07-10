@@ -14,7 +14,7 @@ use App\Http\Controllers\RedirectUrlController;
 |
 */
 
-Route::get('/{shortUrl}', RedirectUrlController::class);
+Route::get('/{shortUrl}', RedirectUrlController::class)->name('redirect-url.invoke');
 Route::get('/', function() {
     phpinfo();
 });

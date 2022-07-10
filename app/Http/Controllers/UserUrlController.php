@@ -17,7 +17,7 @@ class UserUrlController extends Controller
         return successResponse($this->shortUrl::whereUserId(auth()->id())->get());
     }
 
-    public function visit($shortUrlId) {
+    public function urlVisits($shortUrlId) {
         $url = $this->shortUrl::with('visits')->find($shortUrlId);
 
         if($url->user_id === auth()->id()) 
