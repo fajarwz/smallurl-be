@@ -12,6 +12,72 @@ class AuthTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
+    public function user_can_register_using_new_email()
+    {
+        $data = [
+            'name' => 'John',
+            'email' => 'john@test.com',
+        ];
+
+        $this->post(route('auth.register'), array_merge($data, ['password' => 'password']))
+            ->assertStatus(200)
+            ->assertJsonStructure(
+                [
+                    "meta" => [
+                        "code",
+                        "status",
+                        "message",
+                    ],
+                    "data" => [
+                        "user" => [
+                            "name",
+                            "email",
+                            "updated_at",
+                            "created_at",
+                            "id",
+                        ],
+                        "access_token" => [
+                            "token",
+                            "type",
+                            "expires_in",
+                        ]
+                    ]
+                ]
+            )
+            ;
+        
+        $this->assertDatabaseHas('users', $data);
+    }
+
+    /** @test */
+    public function user_cannot_register_using_an_already_registered_email()
+    {
+        $data = [
+            'name' => 'John',
+            'email' => 'john@test.com',
+        ];
+
+        User::factory()->create($data);
+        $this->assertDatabaseHas('users', $data);
+
+        $this->post(route('auth.register'), array_merge($data, ['password' => 'password']))
+            ->assertStatus(422)
+            ->assertJsonStructure(
+                [
+                    "meta" => [
+                        "code",
+                        "status",
+                        "message" => [
+                            "email",
+                        ],
+                    ],
+                    "data" => []
+                ]
+            )
+            ;
+    }
+
+    /** @test */
     public function user_can_login_and_logout()
     {
         $data = [
