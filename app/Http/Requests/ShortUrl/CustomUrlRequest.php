@@ -26,7 +26,7 @@ class CustomUrlRequest extends FormRequest
         return [
             'name' => 'nullable|string|max:191',
             'original_url' => 'required|regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/',
-            'short_url' => 'nullable|string',
+            'short_url' => 'nullable|string|max:191',
         ];
     }
 }

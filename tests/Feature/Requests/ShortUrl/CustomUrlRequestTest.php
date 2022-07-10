@@ -2,12 +2,11 @@
 
 namespace Tests\Feature\Requests\ShortUrl;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use Tests\Unit\Traits\ValidateField;
-use App\Http\Requests\ShortUrl\StoreRequest;
+use App\Http\Requests\ShortUrl\CustomUrlRequest;
+use Tests\TestCase;
 
-class StoreRequestTest extends TestCase
+class CustomUrlRequestTest extends TestCase
 {
     use ValidateField;
 
@@ -39,6 +38,17 @@ class StoreRequestTest extends TestCase
         $this->assertFalse($this->validateField('original_url', ''));
     }
 
+    /** @test */
+    public function short_url_field_is_valid()
+    {
+        $this->assertTrue($this->validateField('short_url', 'w'));
+        $this->assertTrue($this->validateField('short_url', 'web'));
+        $this->assertTrue($this->validateField('short_url', 'my web'));
+        $this->assertTrue($this->validateField('short_url', ''));
+        $this->assertTrue($this->validateField('name', 'lorem ipsum dolor sit amet contecstur lorem ipsum dolor sit amet contecstur lorem ipsum dolor sit amet contecstur lorem ipsum dolor sit amet contecstur lorem ipsum dolor sit amet contecstur l')); //191 char
+        $this->assertFalse($this->validateField('name', 'lorem ipsum dolor sit amet contecstur lorem ipsum dolor sit amet contecstur lorem ipsum dolor sit amet contecstur lorem ipsum dolor sit amet contecstur lorem ipsum dolor sit amet contecstur lo')); //192 char
+    }
+    
     /**
      * Set up operations
      *
@@ -48,7 +58,7 @@ class StoreRequestTest extends TestCase
     {
         parent::setUp();
 
-        $this->rules = (new StoreRequest())->rules();
+        $this->rules = (new CustomUrlRequest())->rules();
         $this->validator = $this->app['validator'];
     }
 }
