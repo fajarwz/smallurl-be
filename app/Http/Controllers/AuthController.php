@@ -36,8 +36,8 @@ class AuthController extends Controller
      *                      )
      *                 ),
      *                 example={
-     *                     "email":"user@example.com",
-     *                     "password":"user1"
+     *                     "email":"user@test.com",
+     *                     "password":"useruser1"
      *                }
      *             )
      *         )
@@ -53,9 +53,9 @@ class AuthController extends Controller
      *              ),
      *              @OA\Property(property="data", type="object",
      *                  @OA\Property(property="user", type="object",
-     *                      @OA\Property(property="id", type="number", example=1),
+     *                      @OA\Property(property="id", type="number", example=2),
      *                      @OA\Property(property="name", type="string", example="User"),
-     *                      @OA\Property(property="email", type="string", example="user@example.com"),
+     *                      @OA\Property(property="email", type="string", example="user@test.com"),
      *                      @OA\Property(property="email_verified_at", type="string", example=null),
      *                      @OA\Property(property="updated_at", type="string", example="2022-06-28 06:06:17"),
      *                      @OA\Property(property="created_at", type="string", example="2022-06-28 06:06:17"),
@@ -127,9 +127,9 @@ class AuthController extends Controller
      *                      )
      *                 ),
      *                 example={
-     *                     "name":"User",
-     *                     "email":"user@example.com",
-     *                     "password":"user1"
+     *                     "name":"John",
+     *                     "email":"john@test.com",
+     *                     "password":"johnjohn1"
      *                }
      *             )
      *         )
@@ -146,8 +146,8 @@ class AuthController extends Controller
      *              @OA\Property(property="data", type="object",
      *                  @OA\Property(property="user", type="object",
      *                      @OA\Property(property="id", type="number", example=1),
-     *                      @OA\Property(property="name", type="string", example="User"),
-     *                      @OA\Property(property="email", type="string", example="user@example.com"),
+     *                      @OA\Property(property="name", type="string", example="John"),
+     *                      @OA\Property(property="email", type="string", example="john@test.com"),
      *                      @OA\Property(property="email_verified_at", type="string", example=null),
      *                      @OA\Property(property="updated_at", type="string", example="2022-06-28 06:06:17"),
      *                      @OA\Property(property="created_at", type="string", example="2022-06-28 06:06:17"),
@@ -253,6 +253,62 @@ class AuthController extends Controller
         return successResponse([], 'Successfully logged out');
     }
 
+    /**
+     * Refresh
+     * @OA\Post (
+     *     path="/api/v1/refresh",
+     *     tags={"Auth"},
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 example={}
+     *             )
+     *         )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Success",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="meta", type="object",
+     *                  @OA\Property(property="code", type="number", example=200),
+     *                  @OA\Property(property="status", type="string", example="success"),
+     *                  @OA\Property(property="message", type="string", example="Token refreshed"),
+     *              ),
+     *              @OA\Property(property="data", type="object",
+     *                  @OA\Property(property="user", type="object",
+     *                      @OA\Property(property="id", type="number", example=2),
+     *                      @OA\Property(property="name", type="string", example="User"),
+     *                      @OA\Property(property="email", type="string", example="user@test.com"),
+     *                      @OA\Property(property="email_verified_at", type="string", example=null),
+     *                      @OA\Property(property="updated_at", type="string", example="2022-06-28 06:06:17"),
+     *                      @OA\Property(property="created_at", type="string", example="2022-06-28 06:06:17"),
+     *                  ),
+     *                  @OA\Property(property="access_token", type="object",
+     *                      @OA\Property(property="token", type="string", example="randomtokenasfhajskfhajf398rureuuhfdshk"),
+     *                      @OA\Property(property="type", type="string", example="Bearer"),
+     *                      @OA\Property(property="expires_in", type="number", example=3600),
+     *                  ),
+     *              ),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Invalid token",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="meta", type="object",
+     *                  @OA\Property(property="code", type="number", example=422),
+     *                  @OA\Property(property="status", type="string", example="error"),
+     *                  @OA\Property(property="message", type="string", example="Unauthenticated."),
+     *              ),
+     *              @OA\Property(property="data", type="object", example={}),
+     *          )
+     *      ),
+     *      security={
+     *         {"Authorization": {}}
+     *     }
+     * )
+     */
     public function refresh()
     {
         return successResponse([
@@ -262,6 +318,6 @@ class AuthController extends Controller
                 'type' => 'Bearer',
                 'expires_in' => auth()->factory()->getTTL() * 60,
             ],
-        ]);
+        ], "Token refreshed");
     }
 }
