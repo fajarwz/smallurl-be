@@ -10,7 +10,7 @@ use Illuminate\Routing\Controller as BaseController;
 /**
  * @OA\Info(
  *    title="SmallUrl API",
- *    description="A url shortener API by fajarwz.com",
+ *    description="A url shortener API by fajarwz.com. Access shortened url with {{host}}/{{short_url}}",
  *    version="1.0.0",
  * ),
  * @OA\SecurityScheme(
