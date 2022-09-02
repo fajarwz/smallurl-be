@@ -96,7 +96,7 @@ class AuthController extends Controller
             'access_token' => [
                 'token' => $token,
                 'type' => 'Bearer',
-                'expires_in' => auth()->factory()->getTTL() * 60,
+                'expires_in' => strtotime('+'.auth()->factory()->getTTL().' minutes'),
             ],
         ]);
 
@@ -197,7 +197,7 @@ class AuthController extends Controller
             'access_token' => [
                 'token' => $token,
                 'type' => 'Bearer',
-                'expires_in' => auth()->factory()->getTTL() * 60,
+                'expires_in' => strtotime('+'.auth()->factory()->getTTL().' minutes'),
             ],
         ], 'User created successfully');
     }
@@ -316,7 +316,7 @@ class AuthController extends Controller
             'access_token' => [
                 'token' => auth()->refresh(),
                 'type' => 'Bearer',
-                'expires_in' => auth()->factory()->getTTL() * 60,
+                'expires_in' => strtotime('+'.auth()->factory()->getTTL().' minutes'),
             ],
         ], "Token refreshed");
     }

@@ -63,7 +63,7 @@ class ShortUrlController extends Controller
      *              @OA\Property(property="meta", type="object",
      *                  @OA\Property(property="code", type="number", example=422),
      *                  @OA\Property(property="status", type="string", example="error"),
-     *                  @OA\Property(property="message", type="object", 
+     *                  @OA\Property(property="message", type="object",
      *                      @OA\Property(property="original_url", type="array", collectionFormat="multi",
      *                        @OA\Items(
      *                          type="string",
@@ -79,13 +79,20 @@ class ShortUrlController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $createShortUrl = $this->shortUrl::create(array_merge(
-            $request->validated(),
-            [
-                'user_id' => config('app.guest_id'),
-                'original_url' => strpos($request->original_url, 'http') !== 0 ? "http://$request->original_url" : $request->original_url,
-            ]
-        ));
+        $duplicatedRandomString = 0;
+        do
+        {
+            $request->short_url = $this->randomString();
+
+            $duplicatedRandomString = $this->shortUrl::whereShortUrl($request->short_url)->count();
+        } while ($duplicatedRandomString > 0);
+
+        $createShortUrl = $this->shortUrl::create([
+            'user_id' => config('app.guest_id'),
+            'name' => $request->original_url,
+            'original_url' => strpos($request->original_url, 'http') !== 0 ? "http://$request->original_url" : $request->original_url,
+            'short_url' => $request->short_url,
+        ]);
 
         if ($createShortUrl)
         {
@@ -93,7 +100,7 @@ class ShortUrlController extends Controller
                 'name' => $createShortUrl['name'],
                 'original_url' => $createShortUrl['original_url'],
                 'short_url' => $createShortUrl['short_url'],
-            ], "Url shortened successfully.");
+            ], 'Url shortened successfully.');
         }
 
         return errorResponse([], 'Error! Please try again later', 500);
@@ -155,7 +162,7 @@ class ShortUrlController extends Controller
      *              @OA\Property(property="meta", type="object",
      *                  @OA\Property(property="code", type="number", example=422),
      *                  @OA\Property(property="status", type="string", example="error"),
-     *                  @OA\Property(property="message", type="object", 
+     *                  @OA\Property(property="message", type="object",
      *                      @OA\Property(property="original_url", type="array", collectionFormat="multi",
      *                        @OA\Items(
      *                          type="string",
@@ -174,6 +181,18 @@ class ShortUrlController extends Controller
      */
     public function customUrl(CustomUrlRequest $request)
     {
+        $duplicatedRandomString = 0;
+        if (empty($request->short_url)) {
+            do
+            {
+                $request->short_url = $this->randomString();
+
+                $duplicatedRandomString = $this->shortUrl::whereShortUrl($request->short_url)->count();
+            } while ($duplicatedRandomString > 0);
+        }
+
+        $request->name = $request->name ?? $request->original_url;
+
         $createShortUrl = $this->shortUrl::create(array_merge(
             $request->validated(),
             ['user_id' => auth()->id()]
@@ -183,13 +202,18 @@ class ShortUrlController extends Controller
         {
             return successResponse([
                 'name' => $createShortUrl['name'],
-                'original_url' => $createShortUrl['original_url'],
+                'original_url' => strpos($request->original_url, 'http') !== 0 ? "http://$request->original_url" : $request->original_url,
                 'short_url' => $createShortUrl['short_url'],
-            ], "Url shortened successfully.");
+            ], 'Url shortened successfully.');
         }
 
         return errorResponse([], 'Error! Please try again later', 500);
 
+    }
+
+    private function randomString()
+    {
+        return substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 5);
     }
 
 }

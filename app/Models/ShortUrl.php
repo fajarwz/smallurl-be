@@ -23,6 +23,13 @@ class ShortUrl extends Model
         return $date->format('Y-m-d H:i:s');
     }
 
+    protected function shortUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => config('app.url').'/'.$value,
+        );
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -33,25 +40,25 @@ class ShortUrl extends Model
         return $this->hasMany(Visit::class);
     }
 
-    private static function randomString() {
-        return substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 5);
-    }
+    // private static function randomString() {
+    //     return substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 5);
+    // }
 
-    protected static function boot()
-    {
-        parent::boot();
+    // protected static function boot()
+    // {
+    //     parent::boot();
 
-        static::creating(function ($model) {
-            $model->name = $model->name ?? $model->original_url;
+    //     static::creating(function ($model) {
+    //         $model->name = $model->name ?? $model->original_url;
 
-            $duplicatedRandomString = 0;
-            if (empty($model->short_url)) {
-                do {
-                    $model->short_url = self::randomString();
+    //         $duplicatedRandomString = 0;
+    //         if (empty($model->short_url)) {
+    //             do {
+    //                 $model->short_url = self::randomString();
                     
-                    $duplicatedRandomString = $model::whereShortUrl($model->short_url)->count();
-                } while ($duplicatedRandomString > 0);
-            }
-        });
-    }
+    //                 $duplicatedRandomString = $model::whereShortUrl($model->short_url)->count();
+    //             } while ($duplicatedRandomString > 0);
+    //         }
+    //     });
+    // }
 }

@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\ShortUrl;
 use App\Models\Visit;
+use DB;
+use Illuminate\Http\Request;
 
 class UserUrlController extends Controller
 {
-    public function __construct(ShortUrl $shortUrl, Visit $visit) {
+    public function __construct(ShortUrl $shortUrl, Visit $visit)
+    {
         $this->shortUrl = $shortUrl;
         $this->visit = $visit;
     }
@@ -58,8 +60,12 @@ class UserUrlController extends Controller
      *     }
      * )
      */
-    public function index() {
-        return successResponse($this->shortUrl::whereUserId(auth()->id())->get(), "User's urls fetched successfully.");
+    public function index()
+    {
+        return successResponse(
+            $this->shortUrl::whereUserId(auth()->id())->get(),
+            "User's urls fetched successfully."
+        );
     }
 
     /**
@@ -115,11 +121,26 @@ class UserUrlController extends Controller
      *     }
      * )
      */
-    public function urlVisits($shortUrlId) {
-        $url = $this->shortUrl::with('visits')->find($shortUrlId);
+    public function urlVisits(Request $request, $shortUrlId)
+    {
+        $dateFrom = $request->query('from') ?? now()->subDays(10)->format('Y-m-d');
+        $dateTo = $request->query('to') ?? now()->addDays(1)->format('Y-m-d');
 
-        if((int) $url->user_id === auth()->id()) 
-            return successResponse($url, "User's urls fetched successfully.");
+        $visits = DB::table('visits')
+            ->select('short_urls.id', 'short_urls.user_id', DB::raw('DATE(visits.created_at) as date'), 'short_urls.name', DB::raw('COUNT(visits.short_url_id) as total_visit'))
+            ->join('short_urls', 'visits.short_url_id', '=', 'short_urls.id')
+            ->where('short_urls.id', $shortUrlId)
+            ->whereBetween('visits.created_at', [$dateFrom, $dateTo])
+            ->groupBy('short_urls.id', 'short_urls.user_id', 'date', 'short_urls.name')
+            ->get();
+
+        if ((int) $visits[0]->user_id === auth()->id())
+        {
+            return successResponse(
+                $visits,
+                "User's urls fetched successfully."
+            );
+        }
 
         return errorResponse([], 'Not found', 404);
     }
