@@ -134,12 +134,14 @@ class UserUrlController extends Controller
             ->groupBy('short_urls.id', 'short_urls.user_id', 'date', 'short_urls.name')
             ->get();
 
-        if ((int) $visits[0]->user_id === auth()->id())
-        {
-            return successResponse(
-                $visits,
-                "User's urls fetched successfully."
-            );
+        if (count($visits) > 0) {
+            if ((int) $visits[0]->user_id === auth()->id())
+            {
+                return successResponse(
+                    $visits,
+                    "User's urls fetched successfully."
+                );
+            }
         }
 
         return errorResponse([], 'Not found', 404);

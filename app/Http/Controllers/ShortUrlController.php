@@ -182,7 +182,8 @@ class ShortUrlController extends Controller
     public function customUrl(CustomUrlRequest $request)
     {
         $duplicatedRandomString = 0;
-        if (empty($request->short_url)) {
+        if (empty($request->short_url))
+        {
             do
             {
                 $request->short_url = $this->randomString();
@@ -195,14 +196,17 @@ class ShortUrlController extends Controller
 
         $createShortUrl = $this->shortUrl::create(array_merge(
             $request->validated(),
-            ['user_id' => auth()->id()]
+            [
+                'user_id' => auth()->id(),
+                'original_url' => strpos($request->original_url, 'http') !== 0 ? "http://$request->original_url" : $request->original_url,
+            ]
         ));
 
         if ($createShortUrl)
         {
             return successResponse([
                 'name' => $createShortUrl['name'],
-                'original_url' => strpos($request->original_url, 'http') !== 0 ? "http://$request->original_url" : $request->original_url,
+                'original_url' => $createShortUrl['original_url'],
                 'short_url' => $createShortUrl['short_url'],
             ], 'Url shortened successfully.');
         }
