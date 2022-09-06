@@ -88,7 +88,7 @@ class AuthController extends Controller
         $token = auth()->attempt($request->validated());
         if (!$token)
         {
-            return errorResponse([], 'Incorrect username or password!', 401);
+            return errorResponse([], ['general' => ['Incorrect email or password!']], 401);
         }
 
         return successResponse([
@@ -311,10 +311,12 @@ class AuthController extends Controller
      */
     public function refresh()
     {
+        $token = auth()->fromUser(auth()->user());
+
         return successResponse([
             'user' => auth()->user(),
             'access_token' => [
-                'token' => auth()->refresh(),
+                'token' => $token,
                 'type' => 'Bearer',
                 'expires_in' => strtotime('+'.auth()->factory()->getTTL().' minutes'),
             ],
