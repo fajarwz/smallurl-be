@@ -40,6 +40,10 @@ Run
 php artisan test
 ```
 
+## Frontend
+
+[SmallUrl FE](https://github.com/fajarwz/smallurl-fe)
+
 ## Demo
 
 Hosted on Heroku: [SmallURL](https://smallurl-fajarwz.herokuapp.com/api/documentation)
