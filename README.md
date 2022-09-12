@@ -46,4 +46,4 @@ php artisan test
 
 ## Demo
 
-Hosted on Heroku: [SmallURL](https://smallurl-fajarwz.herokuapp.com/api/documentation)
+Hosted on Railway: [SmallUrl](https://smallurl-be-production.up.railway.app/api/documentation)
