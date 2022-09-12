@@ -46,4 +46,4 @@ php artisan test
 
 ## Demo
 
-Hosted on Railway: [SmallUrl](https://smallurl-be-production.up.railway.app/api/documentation)
+Hosted on Railway: [SmallUrl](https://smallurl-api.up.railway.app/api/documentation)
